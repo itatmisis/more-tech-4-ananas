@@ -8,8 +8,8 @@ import torch
 class ItemPipeline(torch.nn.Module):
     def __init__(
             self,
-            classifier=LogisticRegression(),
-            trunc_svd=TruncatedSVD,
+            classifier=LogisticRegression(), #нужна предобученная модель
+            trunc_svd=TruncatedSVD(), # нужен предобученный хотя бы на 256 различных семплах
             emb_dim=256,
             sbert=SbertWrapper()
     ):
@@ -30,7 +30,7 @@ class ItemPipeline(torch.nn.Module):
     def get_embedding(self, text):
 
         sbert_emb = self.sbert.get_embedding(text)
-        svd_emb = self.trunc_svd(n_components=self.emb_dim).fit_transform(sbert_emb)
+        svd_emb = self.trunc_svd.transform(sbert_emb)
         return svd_emb
 
     
