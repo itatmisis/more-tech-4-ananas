@@ -3,9 +3,9 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.decomposition import TruncatedSVD
 import numpy as np
 import pickle
+import torch
 
-
-class ItemPipeline:
+class ItemPipeline(torch.nn.Module):
     def __init__(
             self,
             classifier=LogisticRegression(),
