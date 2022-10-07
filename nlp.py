@@ -1,9 +1,5 @@
 import torch
-import gc
 from transformers import AutoTokenizer, AutoModel
-
-torch.cuda.empty_cache()
-gc.collect()
 
 
 class SbertWrapper:
@@ -58,5 +54,35 @@ class SbertWrapper:
         return text_embedding
 
 
+    class SummarizationWrapper:
+    def __init__(self,
+                 model_name="csebuetnlp/mT5_multilingual_XLSum",
+                 ):
+        self.whitespace_handler = lambda k: re.sub('\s+', ' ', re.sub('\n+', ' ', k.strip()))
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+
+    def get_summary(self, text):
+        input_ids = self.tokenizer(
+            [self.whitespace_handler(text)],
+            return_tensors="pt",
+            padding="max_length",
+            truncation=True,
+            max_length=512
+        )["input_ids"]
+
+        output_ids = self.model.generate(
+            input_ids=input_ids,
+            max_length=84,
+            no_repeat_ngram_size=2,
+            num_beams=4
+        )[0]
+
+        summary = self.tokenizer.decode(
+            output_ids,
+            skip_special_tokens=True,
+            clean_up_tokenization_spaces=False
+        )
+        return summary
 
 
