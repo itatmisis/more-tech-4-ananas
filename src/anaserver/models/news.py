@@ -1,6 +1,6 @@
+from anaserver.database import Base
 import sqlalchemy
 from sqlalchemy.orm import relationship
-from anaserver.database import Base
 
 
 class News(Base):

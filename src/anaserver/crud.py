@@ -1,7 +1,8 @@
 from typing import List
+
+from anaserver.models import News, NewsEmbedding, User, UserToNews
 import sqlalchemy
 from sqlalchemy.ext.asyncio import AsyncSession
-from anaserver.models import User, News, UserToNews, NewsEmbedding
 
 
 async def get_user(db: AsyncSession, user_id: int) -> User:

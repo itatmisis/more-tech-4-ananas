@@ -1,7 +1,7 @@
-from sqlalchemy.dialects.postgresql import UUID
-import sqlalchemy
-from pgvector.sqlalchemy import Vector
 from anaserver.database import Base
+from pgvector.sqlalchemy import Vector
+import sqlalchemy
+from sqlalchemy.dialects.postgresql import UUID
 
 
 class NewsEmbedding(Base):

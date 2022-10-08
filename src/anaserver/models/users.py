@@ -1,6 +1,5 @@
-import sqlalchemy
-
 from anaserver.database import Base
+import sqlalchemy
 
 
 class User(Base):
