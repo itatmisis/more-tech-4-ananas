@@ -40,7 +40,7 @@ namespace MORE_Tech.Parser.ParserImplementations.VKParse
                     is_reposted: reposted,
                     by_person: IsByPerson(i)
                     ); ;
-                if(!temp.IsPinned() && !temp.IsByPerson() && !temp.IsAd() && !temp.IsReposted())
+                if(!temp.IsPinned() && !temp.IsByPerson() && !temp.IsAd() && !temp.IsReposted() && temp.GetText().Length!=0)
                     posts = posts.Append(temp).ToArray();
             }
             return posts;

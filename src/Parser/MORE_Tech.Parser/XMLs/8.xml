@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rules>
+  <FeedUrls>
+	  <item><![CDATA[\/]]></item>
+	  <item><![CDATA[\/legalnews]]></item>
+  </FeedUrls>
+  <NewsUrls>
+   <item><![CDATA[\/legalnews\/[0-9]+]]></item>
+  </NewsUrls>
+  <RootUrl>
+  <![CDATA[https://www.garant.ru]]>
+  </RootUrl>
+  <NewsText>
+  <![CDATA[//div[@class='js-mediator-article']]]>
+  </NewsText>
+   <DateTime attribute='date'>
+ <![CDATA[//div[@class = 'actions-info']//time//core-date-format]]>
+  </DateTime>
+
+</rules>
