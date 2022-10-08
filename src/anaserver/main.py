@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 import uvicorn
 import databases
-from Models import models
+from anaserver.models import models
 import sqlalchemy
 from typing import List
 from dotenv import load_dotenv, find_dotenv
@@ -21,9 +21,7 @@ DATABASE_URL = f"postgresql://{user}:{password}@{host}/{db}"
 
 database = databases.Database(DATABASE_URL)
 
-engine = sqlalchemy.create_engine(
-    DATABASE_URL
-)
+engine = sqlalchemy.create_engine(DATABASE_URL)
 models.metadata.create_all(engine)
 
 
@@ -39,9 +37,11 @@ async def startup():
 async def shutdown():
     await database.disconnect()
 
+
 @app.get("/")
 async def start():
     return "hello"
+
 
 @app.get("/news")
 async def news():
@@ -50,6 +50,7 @@ async def news():
         return await database.fetch_all(query)
     except Exception:
         raise HTTPException(status_code=500, detail="Error while getting news")
+
 
 @app.post("/user", response_model=models.User)
 async  def add_user(user: models.User):
@@ -81,11 +82,10 @@ async def add_user_reaction(user_reaction: models.UserReaction):
 
 @app.post('/digest')
 async def digest(digest: models.Digest):
-    return что-то
+    return ���-��
 
 
 
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
