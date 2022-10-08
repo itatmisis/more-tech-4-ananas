@@ -29,6 +29,15 @@ users = sqlalchemy.Table('users', metadata,
     sqlalchemy.Column('userid', sqlalchemy.Integer, primary_key=True),
     sqlalchemy.Column('role', sqlalchemy.ForeignKey("roles.id")))
 
+reaction = sqlalchemy.Table('reaction', metadata,
+    sqlalchemy.Column('id', sqlalchemy.Integer),
+    sqlalchemy.Column('name', sqlalchemy.Text))
+
+user_reaction = sqlalchemy.Table('userreactions', metadata,
+     sqlalchemy.Column('userid', sqlalchemy.ForeignKey('users.id')),
+     sqlalchemy.Column('newsid', sqlalchemy.ForeignKey('news.id')),
+     sqlalchemy.Column('reaction', sqlalchemy.ForeignKey('reaction.id')))
+
 class Role(BaseModel):
     name: str
 
@@ -39,3 +48,12 @@ class RoleDb(BaseModel):
 class User(BaseModel):
     userid: int
     role: int
+
+class UserReaction(BaseModel):
+    userid: int
+    newsid: str
+    reaction: int
+
+class Digest(BaseModel):
+    userid: int
+    type: int

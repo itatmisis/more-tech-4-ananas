@@ -8,7 +8,7 @@
    <item><![CDATA[buh\/news\/\d+\/]]></item>
   </NewsUrls>
   <RootUrl>
-  <![CDATA[https://www.klerk.ru/]]>
+  <![CDATA[https://www.klerk.ru/news/page/100/]]>
   </RootUrl>
    <NewsName>
   <![CDATA[//div[contains(@class, 'content__body')]]]>
@@ -19,8 +19,8 @@
    <Views attribute='count'>
   <![CDATA[//div[@class = 'article__bar']//span[@title = 'Просмотры']//core-count-format]]>
   </Views>
-   <DateTime>
-  <![CDATA[//div[contains(@class, 'content__body')]]]>
+   <DateTime attribute='date'>
+ <![CDATA[//div[@class = 'article__top']//core-date-format]]>
   </DateTime>
 
 </rules>
