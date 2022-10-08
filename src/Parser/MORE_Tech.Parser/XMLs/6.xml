@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rules>
+  <FeedUrls>
+	  <item><![CDATA[\/news\/news_fta\/]]></item>
+	  <item><![CDATA[\/news\/news_fta\/\d+.html]]></item>
+  </FeedUrls>
+  <NewsUrls>
+   <item><![CDATA[\/news\/[a-zA-z-]+\/\d+\/]]></item>
+  </NewsUrls>
+  <RootUrl>
+  <![CDATA[https://www.nalog.gov.ru/rn77]]>
+  </RootUrl>
+   <NewsName>
+  <![CDATA[//div[@class='article__content-block abv']]]>
+  </NewsName>
+  <NewsText>
+  <![CDATA[//div[@class='text_block']]]>
+  </NewsText>
+   <DateTime regex = "\d{2}.\d{2}.\d{4} \d{2}:\d{2}">
+ <![CDATA[//div[@class = 'news__time single-news__time']]]>
+  </DateTime>
+  <Images attribute="src">
+	<![CDATA[//div[@class = 'gallery js-gallery']//img]]>
+  </Images>
+
+</rules>
+
+
+	
+		
+		
+			
+		
+	
+

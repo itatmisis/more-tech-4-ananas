@@ -19,6 +19,7 @@ namespace MORE_Tech.Parser.HTMLParser.Models
         public NewsItemInstruction NewsText { get; set; }
         public NewsItemInstruction Views { get; set; }
         public NewsItemInstruction DateTime { get; set; }
+        public NewsItemInstruction Images { get; set; }
 
         public HtmlParseInstructions()
         {

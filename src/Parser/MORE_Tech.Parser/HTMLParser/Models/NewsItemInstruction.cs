@@ -6,5 +6,6 @@ namespace MORE_Tech.Parser.HTMLParser.Models
     {
         public XPathExpression Expression { get; set; }
         public  string? AttributeName { get; set; }
+        public string? Regex { get; set; }
     }
 }
