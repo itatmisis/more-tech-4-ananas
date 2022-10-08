@@ -19,11 +19,11 @@ namespace MORE_Tech.Parser.ParserImplementations.VKParse
         readonly bool maa = false;
         readonly bool by_person = false;
         //readonly float str;
-        public Post(List<List<string>> attachments, 
+        public Post(List<List<string>> attachments,
             int num_attachments,
-            Dictionary<string, UInt32> interactions, 
-            string text, 
-            string source_url, 
+            Dictionary<string, UInt32> interactions,
+            string text,
+            string source_url,
             UInt32 id,
             UInt32 source_id,
             int source_vk_id,

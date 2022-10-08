@@ -24,7 +24,7 @@ namespace MORE_Tech.Parser.Service
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-           
+
            foreach(var source in getSources())
            {
                 using (var scope = _serviceScopeFactory.CreateScope())
@@ -32,7 +32,7 @@ namespace MORE_Tech.Parser.Service
                     var parser = _resolver(source.Type);
                     await parser.Parse(source);
                 }
-                 
+
            }
         }
 

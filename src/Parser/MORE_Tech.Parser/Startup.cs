@@ -25,7 +25,7 @@ namespace MORE_Tech.Parser
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false);
-            
+
             var appSettings = _configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettings);
 
@@ -69,7 +69,7 @@ namespace MORE_Tech.Parser
                                         throw new Exception("Instructions not found");
                                 }
                             };
-                
+
                 return parserResolver;
             });
         }

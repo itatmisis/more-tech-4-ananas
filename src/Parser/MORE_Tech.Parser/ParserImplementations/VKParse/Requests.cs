@@ -17,7 +17,7 @@ namespace MORE_Tech.Parser.ParserImplementations.VKParse
         public static async Task<string> Send(Dictionary<string, string> keys, VKSettings config)
         {
 
-          //  var data = new Leaf.xNet.HttpRequest { UserAgent = Leaf.xNet.Http.OperaUserAgent(), KeepAlive = true }; 
+          //  var data = new Leaf.xNet.HttpRequest { UserAgent = Leaf.xNet.Http.OperaUserAgent(), KeepAlive = true };
             string parameters="";
             foreach (KeyValuePair<string, string> entry in keys)
             {

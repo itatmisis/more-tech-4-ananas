@@ -14,14 +14,14 @@ namespace MORE_Tech.Data
         public IAttachmentsRepository AttachmentsRepository { get; }
         public INewsSourceRespository NewsSourceRespository { get; }
 
-        public UnitOfWork(NewsDbContext context, INewsRepository newsRepository, 
+        public UnitOfWork(NewsDbContext context, INewsRepository newsRepository,
             IAttachmentsRepository attachmentsRepository,
             INewsSourceRespository newsSourceRespository)
         {
             _context = context;
             NewsRepository = newsRepository;
             AttachmentsRepository = attachmentsRepository;
-            NewsSourceRespository = newsSourceRespository; 
+            NewsSourceRespository = newsSourceRespository;
         }
 
         public async Task<int> SaveChanges()
