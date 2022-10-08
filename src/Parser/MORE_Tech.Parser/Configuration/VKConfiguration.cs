@@ -4,6 +4,7 @@
     {
         public string ApiKey { get; set; }
         public string ApiUrl { get; set; }
+        public string NewsUrl { get; set; }
         public string ApiVersion { get; set; }
         public int NewsCount { get; set; }
         public  string ApiMethod { get; set; }

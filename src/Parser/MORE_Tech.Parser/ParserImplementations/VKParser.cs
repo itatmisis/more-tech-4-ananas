@@ -34,11 +34,11 @@ namespace MORE_Tech.Parser.ParserImplementations
                 ["extended"] = "1"
             };
             JsonParse parsed = new JsonParse(await Requests.Send(keys,  _config));
-            Post[] posts = parsed.MakePosts((uint)source.Id);
-      
+            Post[] posts = parsed.MakePosts((uint)source.Id, $"{_config.NewsUrl}/{source.Uri}?w=wall");
+
             foreach (var post in posts)
             {
-                if(!_unitOfWork.NewsRepository.IsExists(post.News()))
+                if (!_unitOfWork.NewsRepository.IsExists(post.News()))
                 {
                     await saveNews(post.News());
                     foreach (Attachments attachment in post.GetAttachments())

@@ -33,7 +33,7 @@ namespace MORE_Tech.Parser
             services.AddScoped<INewsRepository, NewsRepository>();
             services.AddScoped<INewsSourceRespository, NewsSourceRepository>();
             services.AddScoped<IAttachmentsRepository, AttachmentsRepository>();
-            services.AddScoped<INewsParser, HtmlParser>();
+            services.AddScoped<INewsParser, VKParser>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddHostedService<ParserWorker>();
 
