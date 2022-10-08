@@ -49,7 +49,7 @@ namespace MORE_Tech.Parser.ParserImplementations
             _parseInstructions = _instrutionProcessor.getInstructions(source.Id) ??
                 throw new Exception("Instructions not found");
 
-            await ParseUrl(source.Uri);
+            await ParseUrl(source.Url);
 
             _logger.LogInformation($"End parsing source: {source.Id}");
         }

@@ -9,7 +9,7 @@ namespace MORE_Tech.Data.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Uri { get; set; }
+        public string Url { get; set; }
         public SourceTypes Type { get; set; }
         public bool IsActive { get; set; }
         public virtual ICollection<News> News { get; set; }

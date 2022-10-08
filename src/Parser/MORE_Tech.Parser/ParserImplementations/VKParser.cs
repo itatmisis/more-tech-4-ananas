@@ -29,12 +29,12 @@ namespace MORE_Tech.Parser.ParserImplementations
         {
             Dictionary<string, string> keys = new Dictionary<string, string>()
             {
-                ["domain"] = source.Uri,
+                ["domain"] = source.Url,
                 ["count"] = _config.NewsCount.ToString(),
                 ["extended"] = "1"
             };
             JsonParse parsed = new JsonParse(await Requests.Send(keys,  _config));
-            Post[] posts = parsed.MakePosts((uint)source.Id, $"{_config.NewsUrl}/{source.Uri}?w=wall");
+            Post[] posts = parsed.MakePosts((uint)source.Id, $"{_config.NewsUrl}/{source.Url}?w=wall");
 
             foreach (var post in posts)
             {

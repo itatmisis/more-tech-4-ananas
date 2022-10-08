@@ -13,6 +13,13 @@ namespace MORE_Tech.Data.Configurations
                 .HasOne<News>(x => x.News)
                 .WithMany(x => x.Attachments)
                 .HasForeignKey(x => x.NewsId);
+
+            builder
+                .Property(x => x.NewsId)
+                .HasColumnName("news_id");
+
+           
+
         }
     }
 }

@@ -8,7 +8,7 @@ namespace MORE_Tech.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<NewsSource> builder)
         {
-            builder.ToTable("newssources");
+            builder.ToTable("sources");
 
             builder
                 .HasKey(x => x.Id);
@@ -16,6 +16,10 @@ namespace MORE_Tech.Data.Configurations
             builder
                 .Property(x => x.Id)
                 .ValueGeneratedOnAdd();
+
+            builder
+                .Property(x => x.IsActive)
+                .HasColumnName("is_active");
 
 
 
