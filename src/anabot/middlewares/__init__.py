@@ -1,6 +1,5 @@
-from loader import dp
-
 from anabot.middlewares.throttling import ThrottlingMiddleware
 
-if __name__ == "middlewares":
+
+def setup_middleware(dp):
     dp.middleware.setup(ThrottlingMiddleware())
