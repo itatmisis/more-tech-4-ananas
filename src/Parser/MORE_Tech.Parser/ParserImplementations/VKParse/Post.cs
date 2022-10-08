@@ -11,6 +11,8 @@ namespace MORE_Tech.Parser.ParserImplementations.VKParse
         readonly string text;
         readonly UInt32 id;
         readonly UInt32 source_id;
+        readonly int source_vk_id;
+        readonly string source_url;
         readonly DateTimeOffset date;
         readonly bool is_pinned = false;
         readonly bool is_repost = false;
@@ -21,14 +23,15 @@ namespace MORE_Tech.Parser.ParserImplementations.VKParse
             int num_attachments,
             Dictionary<string, UInt32> interactions, 
             string text, 
+            string source_url, 
             UInt32 id,
             UInt32 source_id,
+            int source_vk_id,
             UInt32 date,
             bool is_pinned,
             bool maa,
             bool is_reposted,
-            bool by_person
-            )
+            bool by_person)
         {
             this.maa = maa;
             this.is_pinned = is_pinned;
@@ -36,10 +39,12 @@ namespace MORE_Tech.Parser.ParserImplementations.VKParse
             this.id = id;
             this.text = text;
             this.source_id = source_id;
+            this.source_url = source_url;
             this.interactions = interactions;
             this.attachments = Attachment(attachments);
             this.is_repost = is_reposted;
             this.by_person = by_person;
+            this.source_vk_id = source_vk_id;
             this.date = DateTimeOffset.FromUnixTimeSeconds(date);
         }
         public List<Attachments> GetAttachments() => attachments;
@@ -48,6 +53,7 @@ namespace MORE_Tech.Parser.ParserImplementations.VKParse
         public int GetNumAttachments() => num_attachments;
         public UInt32 GetGroup() => source_id;
         public UInt32 GetId() => id;
+        public int GetVKId() => source_vk_id;
         public DateTimeOffset GetDate() => date;
         public UInt32 GetSource() => source_id;
         public bool IsPinned() => is_pinned;
@@ -57,7 +63,7 @@ namespace MORE_Tech.Parser.ParserImplementations.VKParse
 
         public News News()
         {
-            return new News("", this.text, "", (int)this.interactions["views"], this.date, (int)this.source_id);
+            return new News("", this.text, this.source_url, (int)this.interactions["views"], this.date, (int)this.source_id);
         }
         public List<Attachments> Attachment(List<List<string>> strings)
         {

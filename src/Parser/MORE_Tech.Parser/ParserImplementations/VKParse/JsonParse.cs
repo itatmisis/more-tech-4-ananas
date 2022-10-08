@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Linq;
 
 
@@ -14,7 +15,7 @@ namespace MORE_Tech.Parser.ParserImplementations.VKParse
             Json = JObject.Parse(response);
         }
 
-        public Post[] MakePosts(UInt32 sourse_id)
+        public Post[] MakePosts(UInt32 source_id, string source_url)
         {
             Post[] posts = new Post[0];
             foreach (var i in Json["response"]["items"])
@@ -30,13 +31,15 @@ namespace MORE_Tech.Parser.ParserImplementations.VKParse
                     interactions: Interactions(i),
                     text: (string)i["text"],
                     id: UInt32.Parse((string)i["id"]),
-                    source_id: sourse_id,
+                    source_id: source_id,
+                    source_url: source_url+$"{(string)i["from_id"]}_{(string)i["id"]}",
+                    source_vk_id: int.Parse((string)i["from_id"]),
                     date: UInt32.Parse((string)i["date"]),
                     is_pinned: Convert.ToBoolean(Convert.ToInt16((string)i["is_pinned"])),
                     maa: Convert.ToBoolean(Convert.ToInt16((string)i["marked_as_ads"])),
                     is_reposted: reposted,
                     by_person: IsByPerson(i)
-                    );
+                    ); ;
                 if(!temp.IsPinned() && !temp.IsByPerson() && !temp.IsAd() && !temp.IsReposted())
                     posts = posts.Append(temp).ToArray();
             }

@@ -38,9 +38,9 @@ namespace MORE_Tech.Parser.Service
              {
                 var unitOfWork = scope.ServiceProvider.GetService<IUnitOfWork>();
 
-                return unitOfWork.NewsSourceRespository.GetAllActive()
-                    .Where(x => x.Type == SourceTypes.HTML).ToList();
-              //  return unitOfWork.NewsSourceRespository.GetAllActive().Where(x => x.Type == Data.Models.Enums.SourceTypes.VK).ToList();
+                //return unitOfWork.NewsSourceRespository.GetAllActive()
+                  //  .Where(x => x.Type == SourceTypes.HTML).ToList();
+                return unitOfWork.NewsSourceRespository.GetAllActive().Where(x => x.Type == Data.Models.Enums.SourceTypes.VK).ToList();
 
             }
         }
