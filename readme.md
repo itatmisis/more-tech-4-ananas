@@ -59,8 +59,30 @@
 Сформированные файла с инструкциями сохраняются в папку, путь до которой указывается в конфигурационном файле **appsettings.json** в поле **PathToXmlFiles**.
 
 
+#### Архитектура VK парсера
 
+Группы, использующиеся для получения новостей указаны в базе данных, что дает гибкость при получении новый записей и регулировании уже существующих источников. На этапе парсинга отсеиваются записи, помеченные как рекламные, закрепленные записи, записи не содержащие текста. 
+При парсинге получаются текст новости, вложения и информация о взаимодействиях с ней. Возможно расширение записываемых в базу данных данных о взаимодействиях и другой сервисной информации. 
 
+Пример создание поста из json:
+
+```csharp
+ Post temp = new Post(
+                    attachments: Attachments(i),
+                    num_attachments: NumAttachments(i),
+                    interactions: Interactions(i),
+                    text: (string)i["text"],
+                    id: UInt32.Parse((string)i["id"]),
+                    source_id: source_id,
+                    source_url: source_url+$"{(string)i["from_id"]}_{(string)i["id"]}",
+                    source_vk_id: int.Parse((string)i["from_id"]),
+                    date: UInt32.Parse((string)i["date"]),
+                    is_pinned: Convert.ToBoolean(Convert.ToInt16((string)i["is_pinned"])),
+                    maa: Convert.ToBoolean(Convert.ToInt16((string)i["marked_as_ads"])),
+                    is_reposted: reposted,
+                    by_person: IsByPerson(i)
+                    ); 
+```
 
 
 
