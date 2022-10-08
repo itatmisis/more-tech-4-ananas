@@ -1,8 +1,8 @@
 from aiogram import types
 from aiogram.dispatcher.filters import Command, Text
-from keyboards.default import digest_menu, registration_menu
-from loader import dp
-from states.registration_states import RegistrationState
+from anabot.keyboards.default import digest_menu, registration_menu
+from anabot.loader import dp
+from anabot.states.registration_states import RegistrationState
 
 
 @dp.message_handler(Command("registration"), state=None)

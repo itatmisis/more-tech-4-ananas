@@ -1,7 +1,7 @@
 from aiogram import executor
-from loader import dp
-from utils.notify_admins import on_startup_notify
-from utils.set_bot_commands import set_default_commands
+from anabot.loader import dp
+from anabot.utils.notify_admins import on_startup_notify
+from anabot.utils.set_bot_commands import set_default_commands
 
 
 async def on_startup(dispatcher):

@@ -1,5 +1,5 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from keyboards.inline.callback_datas import continue_callback, reaction_callback
+from anabot.keyboards.inline.callback_datas import continue_callback, reaction_callback
 
 
 def create_reaction_keyboard(link, article_number, news_id, reaction=None, continue_button=False):

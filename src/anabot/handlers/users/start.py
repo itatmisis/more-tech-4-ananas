@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
-from keyboards.default import registration_menu
-from loader import dp
+from anabot.keyboards.default import registration_menu
+from anabot.loader import dp
 
 
 @dp.message_handler(CommandStart())

@@ -1,8 +1,8 @@
 from aiogram import types
 from aiogram.dispatcher.filters import Text
-from keyboards.inline.callback_datas import continue_callback, reaction_callback
-from keyboards.inline.reaction_buttons import create_reaction_keyboard
-from loader import dp
+from anabot.keyboards.inline.callback_datas import continue_callback, reaction_callback
+from anabot.keyboards.inline.reaction_buttons import create_reaction_keyboard
+from anabot.loader import dp
 
 
 @dp.message_handler(Text(equals=["Дневной дайджест"]), state=None)

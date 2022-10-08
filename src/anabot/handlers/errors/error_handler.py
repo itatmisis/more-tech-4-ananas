@@ -12,7 +12,7 @@ from aiogram.utils.exceptions import (
     TelegramAPIError,
     Unauthorized,
 )
-from loader import dp
+from anabot.loader import dp
 
 
 @dp.errors_handler()
