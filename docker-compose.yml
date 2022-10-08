@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  anaserver:
+    image: ${DOCKER_REGISTRY-}anaserve
+    build:
+      context: .
+      dockerfile: ./src/anaserver/Dockerfile
+      
+ 
+  
+ 
