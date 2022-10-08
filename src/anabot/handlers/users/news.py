@@ -2,17 +2,18 @@ from aiogram import types
 from aiogram.dispatcher.filters import Text
 from anabot.keyboards.inline.callback_datas import continue_callback, reaction_callback
 from anabot.keyboards.inline.reaction_buttons import create_reaction_keyboard
-from anabot.loader import dp
+from anabot.loader import dp, bot
 
 
 @dp.message_handler(Text(equals=["Дневной дайджест"]), state=None)
 async def send_news(message: types.Message):
-    await message.answer("<b>Article Title 1</b>", reply_markup=create_reaction_keyboard("www.google.com", 1, 929751))
-    await message.answer("<b>Article Title 2</b>", reply_markup=create_reaction_keyboard("www.google.com", 2, 929752))
-    await message.answer(
-        "<b>Article Title 3</b>",
-        reply_markup=create_reaction_keyboard("www.google.com", 3, 929753, continue_button=True),
-    )
+    url_ = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr7ISTuF5LYO47wWFzXxyRQaEGRtO58ttf1tnfYns&s"
+    await message.answer_photo(photo=url_, caption="<b>Article Title 1</b>",
+                               reply_markup=create_reaction_keyboard("www.google.com", 1, 929751))
+    await message.answer_photo(photo=url_, caption="<b>Article Title 2</b>",
+                               reply_markup=create_reaction_keyboard("www.google.com", 2, 929752))
+    await message.answer_photo(photo=url_, caption="<b>Article Title 3</b>",
+                               reply_markup=create_reaction_keyboard("www.google.com", 3, 929753, continue_button=True))
     print("Запрос дневного дайджеста")
 
 
@@ -33,14 +34,6 @@ async def save_reaction(call: types.CallbackQuery, callback_data: dict):
     # save like/dislike
 
 
-# @dp.callback_query_handler(view_callback.filter(article_number=['1', '2', '3']))
-# async def save_view(call: types.CallbackQuery, callback_data: dict):
-#     # await call.answer(url="https://www.google.com/", cache_time=15)
-#     # await call.answer(text=text, show_alert=True)
-#     print(callback_data)
-#     # save view
-
-
 @dp.callback_query_handler(continue_callback.filter(article_number=["1", "2", "3"]))
 async def continue_news(call: types.CallbackQuery, callback_data: dict):
     await call.answer(cache_time=15)
@@ -58,14 +51,11 @@ async def continue_news(call: types.CallbackQuery, callback_data: dict):
             reaction=reaction,
         )
     )
-    await call.message.answer(
-        "<b>Article Title 4</b>", reply_markup=create_reaction_keyboard("www.google.com", 1, news_id=1111)
-    )
-    await call.message.answer(
-        "<b>Article Title 5</b>", reply_markup=create_reaction_keyboard("www.google.com", 2, news_id=1111)
-    )
-    await call.message.answer(
-        "<b>Article Title 6</b>",
-        reply_markup=create_reaction_keyboard("www.google.com", 3, news_id=1111, continue_button=True),
-    )
+    url_ = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr7ISTuF5LYO47wWFzXxyRQaEGRtO58ttf1tnfYns&s"
+    await bot.send_photo(call.from_user.id, photo=url_, caption="<b>Article Title 4</b>",
+                         reply_markup=create_reaction_keyboard("www.google.com", 1, 1111))
+    await bot.send_photo(call.from_user.id, photo=url_, caption="<b>Article Title 5</b>",
+                         reply_markup=create_reaction_keyboard("www.google.com", 2, 1111))
+    await bot.send_photo(call.from_user.id, photo=url_, caption="<b>Article Title 6</b>",
+                         reply_markup=create_reaction_keyboard("www.google.com", 1, 1111, continue_button=True))
     print(callback_data)

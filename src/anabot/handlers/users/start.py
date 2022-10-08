@@ -13,6 +13,6 @@ async def bot_start(message: types.Message):
         f"твоих предпочтений\n"
         f"Для того, чтобы я понял, какие новости тебе "
         f"интересны - тебе надо указать данные о себе\n"
-        f"Для этого просто напиши:\n\n/registration",
+        f"Для этого просто напиши:\nРегистрация",
         reply_markup=registration_menu.registration_menu,
     )
