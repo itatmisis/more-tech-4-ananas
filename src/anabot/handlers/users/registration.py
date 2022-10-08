@@ -11,9 +11,9 @@ async def start_registration(message: types.Message):
     await RegistrationState.role.set()
 
 
-@dp.message_handler(Text(equals=["Генеральный директор", "Бухгалтер"]), state=RegistrationState.role)
+@dp.message_handler(Text(equals=["Бухгалтер", "Генеральный директор"]), state=RegistrationState.role)
 async def source_selection(message: types.Message):
-    # save role info
+    # save role info + u_id
     answer = (
         "2. По умолчанию вы будете получать новости из всех доступных источников\nЧтобы изменить источники "
         'новостей напишите команду:\n/sources\nНапишите "Продолжить", чтобы перейти на следующий шаг регистрации'

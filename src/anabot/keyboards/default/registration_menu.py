@@ -6,7 +6,7 @@ registration_menu = ReplyKeyboardMarkup(
 )
 
 role_selection_menu = ReplyKeyboardMarkup(
-    keyboard=[[KeyboardButton(text="Владелец-бизнеса👎"), KeyboardButton(text="Бухгалтер👎")]],
+    keyboard=[[KeyboardButton(text="Генеральный директор"), KeyboardButton(text="Бухгалтер")]],
     resize_keyboard=True,
 )
 
