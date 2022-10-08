@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rules>
+  <FeedUrls>
+	  <item><![CDATA[\/ccccc]]></item>
+  </FeedUrls>
+  <NewsUrls>
+   <item><![CDATA[\/news\/[-a-zA-Z0-9]+]]></item>
+  </NewsUrls>
+  <RootUrl>
+  <![CDATA[https://www.glavbukh.ru/]]>
+  </RootUrl>
+   <NewsName>
+  <![CDATA[//div[contains(@class, 'content__body')]]]>
+  </NewsName>
+  <NewsText>
+  <![CDATA[//div[contains(@class, 'content__body')]]]>
+  </NewsText>
+   <Views>
+  <![CDATA[//div[contains(@class, 'content__body')]]]>
+  </Views>
+   <DateTime>
+  <![CDATA[//div[contains(@class, 'content__body')]]]>
+  </DateTime>
+  
+</rules>
