@@ -2,10 +2,28 @@ from fastapi import FastAPI
 import uvicorn
 import databases
 from Models import models
-DATABASE_URL = "postgresql://ananasik:ananasik_parol@194.58.118.87/news"
+import sqlalchemy
+from typing import List
+from dotenv import load_dotenv, find_dotenv
+import  os
+
+load_dotenv(find_dotenv())
+
+user = os.getenv("USER")
+password = os.getenv("PASSWORD")
+host = os.getenv("HOST")
+db = os.getenv("DB")
+
+
+DATABASE_URL = f"postgresql://{user}:{password}@{host}/{db}"
 # DATABASE_URL = "postgresql://user:password@postgresserver/db"
 
 database = databases.Database(DATABASE_URL)
+
+engine = sqlalchemy.create_engine(
+    DATABASE_URL
+)
+models.metadata.create_all(engine)
 
 
 app = FastAPI(title="News API")
@@ -25,8 +43,19 @@ async def start():
     return "hello"
 
 @app.get("/news")
-async def News():
+async def news():
     query = models.news.select()
+    return await database.fetch_all(query)
+
+@app.post("/user", response_model=models.User)
+async  def addUser(user: models.User):
+    query = models.users.insert().values(userid=user.userid, role = user.role)
+    last_record_id = await database.execute(query)
+    return {**user.dict(), "id": last_record_id}
+
+@app.get("/roles", response_model=List[models.RoleDb])
+async def roles():
+    query = models.roles.select()
     return await database.fetch_all(query)
 
 
