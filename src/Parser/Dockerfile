@@ -1,23 +1,23 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["More_Tech.Parser/More_Tech.Parser.csproj", "More_Tech.Parser/"]
-COPY ["More_Tech.Data/More_Tech.Data.csproj", "More_Tech.Data/"]
-RUN dotnet restore "More_Tech.Parser/More_Tech.Parser.csproj"
+COPY ["Parser/MORE_Tech.Parser/MORE_Tech.Parser.csproj", "Parser/"]
+COPY ["Parser/MORE_Tech.Data/MORE_Tech.Data.csproj", "Parser/"]
+RUN dotnet restore "Parser/MORE_Tech.Parser.csproj"
 COPY . .
-WORKDIR "/src/More_Tech.Parser"
-RUN dotnet build "More_Tech.Parser.csproj" -c Release -o /app/build
+WORKDIR "/src/Parser"
+RUN dotnet build "Parser.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "More_Tech.Parser.csproj" -c Release -o /app/publish
+RUN dotnet publish "Parser.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "More_Tech.Parser.dll"]
+ENTRYPOINT ["dotnet", "Parser.dll"]
