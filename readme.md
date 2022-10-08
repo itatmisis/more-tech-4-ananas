@@ -66,7 +66,7 @@
 
 Пример создание поста из json:
 
-```
+```csharp
  Post temp = new Post(
                     attachments: Attachments(i),
                     num_attachments: NumAttachments(i),
