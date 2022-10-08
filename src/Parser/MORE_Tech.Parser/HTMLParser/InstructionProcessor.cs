@@ -11,113 +11,110 @@ namespace MORE_Tech.Parser.HTMLParser
     public class InstructionProcessor
     {
         private readonly string _pathToXmlFiles;
-        public InstructionProcessor(AppSettings options)
+        private readonly ILogger<InstructionProcessor> _logger;
+        public InstructionProcessor(IOptions<AppSettings> options, ILogger<InstructionProcessor> logger)
         {
-            _pathToXmlFiles = options.PathToXmlFiles;
+            _pathToXmlFiles = options.Value.PathToXmlFiles;
+            _logger = logger;
         }
         public HtmlParseInstructions getInstructions(int sourceId)
         {
             var doc = getXml(sourceId);
-            if (doc is null)
-            {
-                return null;
-            }
-
             return parseDoc(doc);
         }
 
         private HtmlParseInstructions parseDoc(XmlDocument doc)
         {
             HtmlParseInstructions instructions = new HtmlParseInstructions();
-            try
+            var instructionsElement = doc.DocumentElement;
+
+            if(instructionsElement is null)
             {
-                var instructionsElement = doc.DocumentElement;
-
-                if(instructionsElement is null)
-                {
-                    throw new Exception("Invalid xml document");
-                }
-                foreach (XmlElement instruction in instructionsElement)
-                {
-                    if(instruction?.FirstChild?.InnerText == null)
-                    {
-                        throw new Exception("Invalid xml instruction");
-                    }
-                    switch (instruction?.Name)
-                    {
-                        case nameof(HtmlParseInstructions.NewsName):
-                            instructions.NewsName = new()
-                            {
-                                Expression = XPathExpression.Compile(instruction.FirstChild.InnerText),
-                                AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value,
-                                Regex = instruction.Attributes?.GetNamedItem("regex")?.Value
-                            };
-                            break;
-                        case nameof(HtmlParseInstructions.NewsText):
-                            instructions.NewsText = new()
-                            {
-                                Expression = XPathExpression.Compile(instruction.FirstChild.InnerText),
-                                AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value,
-                                Regex = instruction.Attributes?.GetNamedItem("regex")?.Value
-                            };
-                            break;
-                        case nameof(HtmlParseInstructions.Views):
-                            instructions.Views = new()
-                            {
-                                Expression = XPathExpression.Compile(instruction.FirstChild.InnerText),
-                                AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value,
-                                Regex = instruction.Attributes?.GetNamedItem("regex")?.Value
-                            };
-                            break;
-                        case nameof(HtmlParseInstructions.DateTime):
-                            instructions.DateTime = new()
-                            {
-                                Expression = XPathExpression.Compile(instruction.FirstChild.InnerText),
-                                AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value,
-                                Regex = instruction.Attributes?.GetNamedItem("regex")?.Value
-                            };
-                            break;
-                        case nameof(HtmlParseInstructions.Images):
-                            instructions.Images = new()
-                            {
-                                Expression = XPathExpression.Compile(instruction.FirstChild.InnerText),
-                                AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value,
-                                Regex = instruction.Attributes?.GetNamedItem("regex")?.Value
-                            };
-                            break;
-                        case nameof(HtmlParseInstructions.RootUrl):
-                            instructions.RootUrl = instruction.FirstChild.InnerText;
-                            break;
-                        case nameof(HtmlParseInstructions.FeedUrls):
-                            foreach (XmlElement url in instruction.ChildNodes)
-                            {
-                                instructions.FeedUrls.Add(new Regex($@"{url.FirstChild.InnerText}"));
-                            }
-                            break;
-                        case nameof(HtmlParseInstructions.NewsUrls):
-                            foreach (XmlElement url in instruction.ChildNodes)
-                            {
-                                instructions.NewsUrls.Add(new Regex($@"{url.FirstChild.InnerText}"));
-                            }
-                            break;
-
-                    }
-                }
-
-                return instructions;
+                throw new Exception("Invalid xml document");
             }
-            catch (Exception ex)
+            foreach (XmlElement instruction in instructionsElement)
             {
-                Console.WriteLine(ex.Message);
-                return null;
+                if(instruction?.FirstChild?.InnerText == null)
+                {
+                    throw new Exception($"Instruction with name: {instruction?.Name} doesn");
+                }
+                switch (instruction?.Name)
+                {
+                    case nameof(HtmlParseInstructions.NewsName):
+                        instructions.NewsName = new()
+                        {
+                            Expression = XPathExpression.Compile(instruction.FirstChild.InnerText),
+                            AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value,
+                            Regex = instruction.Attributes?.GetNamedItem("regex")?.Value
+                        };
+                        break;
+                    case nameof(HtmlParseInstructions.NewsText):
+                        instructions.NewsText = new()
+                        {
+                            Expression = XPathExpression.Compile(instruction.FirstChild.InnerText),
+                            AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value,
+                            Regex = instruction.Attributes?.GetNamedItem("regex")?.Value
+                        };
+                        break;
+                    case nameof(HtmlParseInstructions.Views):
+                        instructions.Views = new()
+                        {
+                            Expression = XPathExpression.Compile(instruction.FirstChild.InnerText),
+                            AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value,
+                            Regex = instruction.Attributes?.GetNamedItem("regex")?.Value
+                        };
+                        break;
+                    case nameof(HtmlParseInstructions.DateTime):
+                        instructions.DateTime = new()
+                        {
+                            Expression = XPathExpression.Compile(instruction.FirstChild.InnerText),
+                            AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value,
+                            Regex = instruction.Attributes?.GetNamedItem("regex")?.Value
+                        };
+                        break;
+                    case nameof(HtmlParseInstructions.Images):
+                        instructions.Images = new()
+                        {
+                            Expression = XPathExpression.Compile(instruction.FirstChild.InnerText),
+                            AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value,
+                            Regex = instruction.Attributes?.GetNamedItem("regex")?.Value
+                        };
+                        break;
+                    case nameof(HtmlParseInstructions.RootUrl):
+                        instructions.RootUrl = instruction.FirstChild.InnerText;
+                        break;
+
+                    case nameof(HtmlParseInstructions.FeedUrls):
+                        foreach (XmlElement url in instruction.ChildNodes)
+                        {
+                            if(url?.FirstChild?.InnerText == null)
+                            {
+                                throw new Exception($"Instruction for {nameof(HtmlParseInstructions.FeedUrls)} is invalid");
+                            }
+                            instructions.FeedUrls.Add(new Regex($@"{url.FirstChild.InnerText}"));
+                        }
+                        break;
+                    case nameof(HtmlParseInstructions.NewsUrls):
+                        foreach (XmlElement url in instruction.ChildNodes)
+                        {
+                            if (url?.FirstChild?.InnerText == null)
+                            {
+                                throw new Exception($"Instruction for {nameof(HtmlParseInstructions.NewsUrls)} is invalid");
+                            }
+                            instructions.NewsUrls.Add(new Regex($@"{url.FirstChild.InnerText}"));
+                        }
+                        break;
+                }
             }
+
+            return instructions;
         }
 
         private XmlDocument getXml(int sourceId)
         {
             if (!File.Exists(Path.Combine(_pathToXmlFiles, $"{sourceId}.xml")))
             {
-                return null;
+                throw new Exception($"File: {sourceId}.xml not found");
             }
 
             try
@@ -128,7 +125,7 @@ namespace MORE_Tech.Parser.HTMLParser
             }
             catch (Exception ex)
             {
-                return null;
+                throw new Exception($"Error while opening file: {sourceId}.xml. Meesage: {ex.Message}");
             }
 
         }

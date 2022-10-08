@@ -20,10 +20,6 @@ namespace MORE_Tech.Data.Configurations
             builder
                 .Property(x => x.IsActive)
                 .HasColumnName("is_active");
-
-
-
-
         }
     }
 }

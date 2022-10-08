@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MORE_Tech.Data.Models;
 
@@ -17,8 +16,6 @@ namespace MORE_Tech.Data.Configurations
             builder
                 .Property(x => x.NewsId)
                 .HasColumnName("news_id");
-
-           
 
         }
     }

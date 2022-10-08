@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<rules>
+<instructions>
   <FeedUrls>
 	  <item><![CDATA[\/news\/news_fta\/]]></item>
 	  <item><![CDATA[\/news\/news_fta\/\d+.html]]></item>
@@ -22,8 +22,7 @@
   <Images attribute="src">
 	<![CDATA[//div[@class = 'gallery js-gallery']//img]]>
   </Images>
-
-</rules>
+</instructions>
 
 
 	

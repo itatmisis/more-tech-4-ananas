@@ -8,7 +8,6 @@ using MORE_Tech.Parser.HTMLParser;
 using MORE_Tech.Parser.HTMLParser.Models;
 using MORE_Tech.Parser.Interfaces;
 using MORE_Tech.Parser.RequetsHelper;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace MORE_Tech.Parser.ParserImplementations
@@ -26,9 +25,11 @@ namespace MORE_Tech.Parser.ParserImplementations
         private readonly Object _locker = new object();
         private int recutsionDepth = 0;
 
-        public HtmlParser(IOptions<AppSettings> settings, IUnitOfWork unitOfWork, ILogger<HtmlParser> logger)
+        public HtmlParser(IOptions<AppSettings> settings, IUnitOfWork unitOfWork, ILogger<HtmlParser> logger,
+            InstructionProcessor instructionProcessor)
         {
-            _instrutionProcessor = new InstructionProcessor(settings.Value);
+            _instrutionProcessor = instructionProcessor ??
+                throw new ArgumentNullException(nameof(instructionProcessor));
 
             _unitOfWork = unitOfWork ?? 
                 throw new ArgumentNullException(nameof(unitOfWork));
@@ -38,16 +39,21 @@ namespace MORE_Tech.Parser.ParserImplementations
             _logger = logger;
         }
         public async Task Parse(NewsSource source)
-        {
-            _logger.LogInformation($"Start parsing source: {source.Id}");
-            if(source == null)
-            {
+        { 
+            _source = source ??
                 throw new ArgumentNullException(nameof(source));
-            }
-            _source = source;
+            _logger.LogInformation($"Start parsing source: {source.Id}");
 
-            _parseInstructions = _instrutionProcessor.getInstructions(source.Id) ??
-                throw new Exception("Instructions not found");
+            try
+            {
+                _parseInstructions = _instrutionProcessor.getInstructions(source.Id) ??
+              throw new Exception("Instructions not found");
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error while getting instruction file: {ex.Message}");
+                return;
+            }
 
             await ParseUrl(source.Url);
 
@@ -124,7 +130,7 @@ namespace MORE_Tech.Parser.ParserImplementations
 
                 var parsedNews = await Task.WhenAll(parseTasks);
 
-                    foreach(var news in parsedNews.Where(n => n!=null))
+                  foreach(var news in parsedNews.Where(n => n!=null))
                 {
                     try
                     {
@@ -187,15 +193,15 @@ namespace MORE_Tech.Parser.ParserImplementations
             {
                 throw new Exception("Recursion level more than 10");
             }
-           
-            string body = string.Empty;
+
+            string body;
             try
             {
                 body = await HttpRequests.Send(new Uri(url));
             }
             catch(Exception ex)
             {
-                _logger.LogError($"Error while sending httpReuest: {url}");
+                _logger.LogError($"Error while sending httpReuest: {url}. Message: {ex.Message}");
                 throw;
             }
 
@@ -207,7 +213,7 @@ namespace MORE_Tech.Parser.ParserImplementations
             }
              catch(Exception ex)
             {
-                _logger.LogError($"Error while parsing blocks of news: {url}");
+                _logger.LogError($"Error while parsing blocks of news: {url}. Message: {ex.Message}");
                 throw;
             }
         }
@@ -246,7 +252,6 @@ namespace MORE_Tech.Parser.ParserImplementations
                 view = 0;
             }
             
-
             var dateString = parseItem(doc, _parseInstructions.DateTime);
             if (!DateTime.TryParse(dateString, out DateTime date))
             {
@@ -266,8 +271,6 @@ namespace MORE_Tech.Parser.ParserImplementations
                 }
             }
          
-
-
             return news;
         }
 
@@ -279,13 +282,15 @@ namespace MORE_Tech.Parser.ParserImplementations
             string result = string.Empty;
             if (elem != null && elem.Any())
             {
-
+                //Если нужно брать не InnerText, а какой-то атрибут
                 if (!string.IsNullOrEmpty(itemInstruction.AttributeName))
                 {
                     var elemWithValue = elem.FirstOrDefault(x => !string.IsNullOrEmpty(x.Attributes[itemInstruction.AttributeName]?.Value));
                     if(elemWithValue != null)
                     {
                         var attrValue = elemWithValue.Attributes[itemInstruction.AttributeName].Value;
+
+                        //Если нужно брать не все значение, а только его часть по Regex
                         if (!string.IsNullOrEmpty(itemInstruction.Regex))
                         {
                             var match = new Regex(itemInstruction.Regex).Matches(attrValue);
@@ -319,7 +324,8 @@ namespace MORE_Tech.Parser.ParserImplementations
 
                 if (!string.IsNullOrEmpty(itemInstruction.AttributeName))
                 {
-                    var elemsWithValue = elem.Where(x => !string.IsNullOrEmpty(x.Attributes[itemInstruction.AttributeName]?.Value));
+                    var elemsWithValue = elem
+                        .Where(x => !string.IsNullOrEmpty(x.Attributes[itemInstruction.AttributeName]?.Value));
                     foreach(var elemVal in elemsWithValue)
                     {
                         if (elemVal != null)
@@ -328,7 +334,10 @@ namespace MORE_Tech.Parser.ParserImplementations
                             if (!string.IsNullOrEmpty(itemInstruction.Regex))
                             {
                                 var match = new Regex(itemInstruction.Regex).Matches(attrValue);
-                                results.Add(match?.FirstOrDefault().Value);
+                                if(match?.FirstOrDefault()?.Value != null)
+                                {
+                                    results.Add(match?.FirstOrDefault().Value);
+                                }
                             }
                             results.Add(attrValue);
                         }
@@ -378,10 +387,5 @@ namespace MORE_Tech.Parser.ParserImplementations
         {
             return _parseInstructions.NewsUrls.Any(x =>x.IsMatch(url));
         }
-
-
-
-
-
     }
 }

@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MORE_Tech.Data.Configurations;
 using MORE_Tech.Data.Models;
 

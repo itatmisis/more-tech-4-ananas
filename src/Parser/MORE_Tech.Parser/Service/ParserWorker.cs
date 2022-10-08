@@ -81,7 +81,14 @@ namespace MORE_Tech.Parser.Service
                         _logger.LogError($"Error while resolving parser of type: {source.Type}. Message:{ex.Message}");
                         continue;
                     }
-                    await parser.Parse(source);
+                    try
+                    {
+                        await parser.Parse(source);
+                    }
+                    catch(Exception ex)
+                    {
+                        _logger.LogError($"Error while HTML parser working: {ex.Message}");
+                    }
                 }
 
             }

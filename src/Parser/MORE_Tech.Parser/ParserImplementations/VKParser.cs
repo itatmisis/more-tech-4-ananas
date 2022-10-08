@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Mail;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using MORE_Tech.Data;
 using MORE_Tech.Data.Models;
 using MORE_Tech.Parser.Configuration;
