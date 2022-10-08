@@ -49,28 +49,40 @@ namespace MORE_Tech.Parser.HTMLParser
                             instructions.NewsName = new()
                             {
                                 Expression = XPathExpression.Compile(instruction.FirstChild.InnerText),
-                                AttributeName = instruction.Attributes?.GetNamedItem("takenAttrubute")?.Value
+                                AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value,
+                                Regex = instruction.Attributes?.GetNamedItem("regex")?.Value
                             };
                             break;
                         case nameof(HtmlParseInstructions.NewsText):
                             instructions.NewsText = new()
                             {
                                 Expression = XPathExpression.Compile(instruction.FirstChild.InnerText),
-                                AttributeName = instruction.Attributes?.GetNamedItem("takenAttrubute")?.Value
+                                AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value,
+                                Regex = instruction.Attributes?.GetNamedItem("regex")?.Value
                             };
                             break;
                         case nameof(HtmlParseInstructions.Views):
                             instructions.Views = new()
                             {
                                 Expression = XPathExpression.Compile(instruction.FirstChild.InnerText),
-                                AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value
+                                AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value,
+                                Regex = instruction.Attributes?.GetNamedItem("regex")?.Value
                             };
                             break;
                         case nameof(HtmlParseInstructions.DateTime):
                             instructions.DateTime = new()
                             {
                                 Expression = XPathExpression.Compile(instruction.FirstChild.InnerText),
-                                AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value
+                                AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value,
+                                Regex = instruction.Attributes?.GetNamedItem("regex")?.Value
+                            };
+                            break;
+                        case nameof(HtmlParseInstructions.Images):
+                            instructions.Images = new()
+                            {
+                                Expression = XPathExpression.Compile(instruction.FirstChild.InnerText),
+                                AttributeName = instruction.Attributes?.GetNamedItem("attribute")?.Value,
+                                Regex = instruction.Attributes?.GetNamedItem("regex")?.Value
                             };
                             break;
                         case nameof(HtmlParseInstructions.RootUrl):

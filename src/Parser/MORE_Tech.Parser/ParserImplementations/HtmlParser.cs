@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using MORE_Tech.Data;
 using MORE_Tech.Data.Models;
+using MORE_Tech.Data.Models.Enums;
 using MORE_Tech.Parser.Configuration;
 using MORE_Tech.Parser.HTMLParser;
 using MORE_Tech.Parser.HTMLParser.Models;
@@ -37,6 +38,7 @@ namespace MORE_Tech.Parser.ParserImplementations
         }
         public async Task Parse(NewsSource source)
         {
+            _logger.LogInformation($"Start parsing source: {source.Id}");
             if(source == null)
             {
                 throw new ArgumentNullException(nameof(source));
@@ -47,6 +49,8 @@ namespace MORE_Tech.Parser.ParserImplementations
                 throw new Exception("Instructions not found");
 
             await ParseUrl(source.Uri);
+
+            _logger.LogInformation($"End parsing source: {source.Id}");
         }
 
         private async Task ParseUrl(string url)
@@ -82,10 +86,9 @@ namespace MORE_Tech.Parser.ParserImplementations
         private async Task parseFeed(string url)
         {
             _logger.LogInformation($"Start parsing FeedUrl: {url}");
-            if (_visitedUrls.Contains(url) && recutsionDepth > 10)
+            if (_visitedUrls.Contains(url))
             {
-                _logger.LogWarning($"Url: {url} already vidited");
-                throw new Exception("Url already visited");
+                throw new Exception($"Url {url} already visited");
             }
             _visitedUrls.Add(url);
             if (!url.Contains(_parseInstructions.RootUrl))
@@ -93,9 +96,9 @@ namespace MORE_Tech.Parser.ParserImplementations
                 url = _parseInstructions.RootUrl + url;
             }
 
-            if (recutsionDepth > 100)
+            if (recutsionDepth > 1000)
             {
-                throw new Exception("Recursion level more than 10");
+                throw new Exception("Recursion level more than 1000");
             }
 
             recutsionDepth++;
@@ -137,7 +140,14 @@ namespace MORE_Tech.Parser.ParserImplementations
 
                 foreach(var feedUrl in feedUrls)
                 {
-                    await parseFeed(feedUrl);
+                    try
+                    {
+                        await parseFeed(feedUrl);
+                    }
+                    catch(Exception ex)
+                    {
+                        _logger.LogError($"Error while parsing feed: {ex.Message}");
+                    }
                 }
                 recutsionDepth--;
             }
@@ -162,7 +172,7 @@ namespace MORE_Tech.Parser.ParserImplementations
                 }
                 _visitedUrls.Add(url);
             }
-            _logger.LogInformation($"Start parsing news: {url}");
+            _logger.LogInformation($"Start parsing news: {url} NNNN:{recutsionDepth}");
             if (!url.Contains(_parseInstructions.RootUrl))
             {
                 url = _parseInstructions.RootUrl + url;
@@ -217,21 +227,44 @@ namespace MORE_Tech.Parser.ParserImplementations
 
             if( text == null)
             {
+                _logger.LogError($"Error while parsing text of news: {url}");
                 return null;
             }
 
-            if(!int.TryParse(parseItem(doc, _parseInstructions.Views), out int view))
+            int view;
+            if(_parseInstructions.Views != null)
             {
-                return null;
+                if (!int.TryParse(parseItem(doc, _parseInstructions.Views), out view))
+                {
+                    _logger.LogError($"Error while parsing views of news: {url}");
+                    return null;
+                }
             }
+            else
+            {
+                view = 0;
+            }
+            
 
             var dateString = parseItem(doc, _parseInstructions.DateTime);
             if (!DateTime.TryParse(dateString, out DateTime date))
             {
+                _logger.LogError($"Error while parsing date of news: {url}");
                 return null;
             }
+            var images = parseAttechesItems(doc, _parseInstructions.Images);
 
-            return new News(string.Empty, text, url, view, date, _source.Id);
+            var news = new News(string.Empty, text, url, view, date, _source.Id);
+
+            if (images != null && images.Any())
+            {
+                 images
+                    .ForEach(x => {
+                        news.Attachments.Add(new Attachments(x, AttachmentTypes.Photo));
+                     });
+            }
+
+            return news;
         }
 
 
@@ -245,14 +278,66 @@ namespace MORE_Tech.Parser.ParserImplementations
 
                 if (!string.IsNullOrEmpty(itemInstruction.AttributeName))
                 {
-                    result = elem.First().Attributes[itemInstruction.AttributeName].Value;
+                    var elemWithValue = elem.FirstOrDefault(x => !string.IsNullOrEmpty(x.Attributes[itemInstruction.AttributeName]?.Value));
+                    if(elemWithValue != null)
+                    {
+                        var attrValue = elemWithValue.Attributes[itemInstruction.AttributeName].Value;
+                        if (!string.IsNullOrEmpty(itemInstruction.Regex))
+                        {
+                            var match = new Regex(itemInstruction.Regex).Matches(attrValue);
+                            return  match?.FirstOrDefault().Value;
+                        }
+                        return attrValue;
+                    }
+                    return null;
                 }
                 else
                 {
+                    if (!string.IsNullOrEmpty(itemInstruction.Regex))
+                    {
+                        var match = new Regex(itemInstruction.Regex).Matches(elem.First().InnerText);
+                        return match?.FirstOrDefault().Value;
+                    }
                     result = elem.First().InnerText;
                 }
             }
             return result;
+        }
+
+
+        private List<string> parseAttechesItems(HtmlDocument doc, NewsItemInstruction itemInstruction)
+        {
+            var elem = doc.DocumentNode.SelectNodes(itemInstruction.Expression);
+
+            List<string> results = new();
+            if (elem != null && elem.Any())
+            {
+
+                if (!string.IsNullOrEmpty(itemInstruction.AttributeName))
+                {
+                    var elemsWithValue = elem.Where(x => !string.IsNullOrEmpty(x.Attributes[itemInstruction.AttributeName]?.Value));
+                    foreach(var elemVal in elemsWithValue)
+                    {
+                        if (elemVal != null)
+                        {
+                            var attrValue = elemVal.Attributes[itemInstruction.AttributeName].Value;
+                            if (!string.IsNullOrEmpty(itemInstruction.Regex))
+                            {
+                                var match = new Regex(itemInstruction.Regex).Matches(attrValue);
+                                results.Add(match?.FirstOrDefault().Value);
+                            }
+                            results.Add(attrValue);
+                        }
+                    }
+                }
+                else
+                {
+                    results = elem.Select(x => x.InnerText)
+                        .Where(x => x!= null)
+                        .ToList();
+                }
+            }
+            return results;
         }
 
         private List<string> getUrlsNews(string body)
