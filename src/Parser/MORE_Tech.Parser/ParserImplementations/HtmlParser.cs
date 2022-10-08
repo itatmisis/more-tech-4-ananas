@@ -8,6 +8,7 @@ using MORE_Tech.Parser.HTMLParser;
 using MORE_Tech.Parser.HTMLParser.Models;
 using MORE_Tech.Parser.Interfaces;
 using MORE_Tech.Parser.RequetsHelper;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace MORE_Tech.Parser.ParserImplementations
@@ -123,7 +124,7 @@ namespace MORE_Tech.Parser.ParserImplementations
 
                 var parsedNews = await Task.WhenAll(parseTasks);
 
-                foreach(var news in parsedNews.Where(n => n!=null))
+                    foreach(var news in parsedNews.Where(n => n!=null))
                 {
                     try
                     {
@@ -252,17 +253,20 @@ namespace MORE_Tech.Parser.ParserImplementations
                 _logger.LogError($"Error while parsing date of news: {url}");
                 return null;
             }
-            var images = parseAttechesItems(doc, _parseInstructions.Images);
-
             var news = new News(string.Empty, text, url, view, date, _source.Id);
-
-            if (images != null && images.Any())
+            if (_parseInstructions.Images != null)
             {
-                 images
-                    .ForEach(x => {
-                        news.Attachments.Add(new Attachments(x, AttachmentTypes.Photo));
-                     });
+                var images = parseAttechesItems(doc, _parseInstructions.Images);
+                if (images != null && images.Any())
+                {
+                    images
+                       .ForEach(x => {
+                           news.Attachments.Add(new Attachments(x, AttachmentTypes.Photo));
+                       });
+                }
             }
+         
+
 
             return news;
         }
