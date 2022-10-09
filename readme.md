@@ -97,7 +97,7 @@ API написан на языке Python с использование веб-�
 
 
 ```
-git clone https://github.com/itatmisis/more-tech-4-ananas-anaserver
+git clone https://github.com/itatmisis/more-tech-4-ananas-anaserver.git
 docker build -t API -f Dockerfile .
 docker run -it -d -p 8000: 8000 API
 ```
