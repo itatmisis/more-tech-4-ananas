@@ -17,4 +17,4 @@ class Trends:
         self.text_data = text_data
         self.id_data = id_data
         self.clusterer = MiniBatchKMeans(n_clusters=self.n_clusters).fit(self.text_data)
-        self.labels = self.clusterer.labels_
+        self.labels = dict(zip(self.id_data, self.clusterer.labels_))
