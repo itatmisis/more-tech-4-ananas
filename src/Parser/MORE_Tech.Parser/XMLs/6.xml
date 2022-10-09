@@ -10,8 +10,8 @@
   <RootUrl>
   <![CDATA[https://www.nalog.gov.ru/rn77]]>
   </RootUrl>
-   <NewsName>
-  <![CDATA[//div[@class='article__content-block abv']]]>
+   <NewsName attribute="content">
+  <![CDATA[//meta[@name='description']]]>
   </NewsName>
   <NewsText>
   <![CDATA[//div[@class='text_block']]]>

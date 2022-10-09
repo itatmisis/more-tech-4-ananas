@@ -11,10 +11,16 @@
   <RootUrl>
   <![CDATA[https://www.garant.ru]]>
   </RootUrl>
+	<NewsName>
+	<![CDATA[//div[@class = 'page-content']//h1]]>
+	</NewsName>
   <NewsText>
   <![CDATA[//div[@class='js-mediator-article']]]>
   </NewsText>
    <DateTime>
  <![CDATA[//div[@class = 'actions-info']//time]]>
   </DateTime>
+	<Images attribute="src">
+		<![CDATA[//table//img]]>
+	</Images>
 </instructions>
