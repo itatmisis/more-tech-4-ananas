@@ -84,5 +84,23 @@
                     ); 
 ```
 
+#### API
+
+API написан на языке Python с использование веб-фреймворкм FastAPI. API позволяет получить новости для пользователя,
+новости по ролям. Добавлять реалкции пользователся на новости.
+
+```
+	Ознакомится со всеми эндпоинтами API можно по ссылке: http://194.58.118.87:8001/docs
+```
+
+##### Запуск
+
+
+```
+git clone https://github.com/itatmisis/more-tech-4-ananas-anaserver
+docker build -t API -f Dockerfile .
+docker run -it -d -p 8000: 8000 API
+```
+
 
 
