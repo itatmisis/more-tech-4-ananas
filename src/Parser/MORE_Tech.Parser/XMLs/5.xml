@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<instructions>
+  <FeedUrls>
+	  <item><![CDATA[\/]]></item>
+	  <item><![CDATA[news\/page\/[\d]+\/]]></item>
+  </FeedUrls>
+  <NewsUrls>
+   <item><![CDATA[\/news\/[a-zA-z-]+\/]]></item>
+  </NewsUrls>
+  <RootUrl>
+  <![CDATA[https://rb.ru/news/]]>
+  </RootUrl>
+   <NewsName>
+  <![CDATA[//div[@class='article__content-block abv']]]>
+  </NewsName>
+  <NewsText>
+  <![CDATA[//div[@class='article__content-block abv']]]>
+  </NewsText>
+   <DateTime attribute='datetime'>
+ <![CDATA[//div[contains(@class, 'article-header__wrap')]//time[@class = 'article-header__date']]]>
+  </DateTime>
+</instructions>

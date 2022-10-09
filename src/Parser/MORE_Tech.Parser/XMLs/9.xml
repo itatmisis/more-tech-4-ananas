@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<instructions>
+  <FeedUrls>
+	  <item><![CDATA[\/]]></item>
+    <item><![CDATA[\/legalnews\/]]></item>
+	  <item><![CDATA[\/legalnews\/\?page=\d+]]></item>
+  </FeedUrls>
+  <NewsUrls>
+   <item><![CDATA[\/legalnews\/[0-9]+]]></item>
+  </NewsUrls>
+  <RootUrl>
+  <![CDATA[http://www.consultant.ru]]>
+  </RootUrl>
+  <NewsText>
+  <![CDATA[//div[@class= 'news-page__text']]]>
+  </NewsText>
+  <Images attribute="src">
+    <![CDATA[//div[@class = 'news-page__content']//img]]>
+  </Images>
+   <DateTime>
+ <![CDATA[//div[@class = 'news-page__date']]]>
+  </DateTime>
+</instructions>

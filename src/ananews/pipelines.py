@@ -1,14 +1,14 @@
-from typing import Tuple, Union
 import os
-import joblib
+from typing import Tuple, Union
 
+import joblib
 import numpy as np
 from sklearn.decomposition import TruncatedSVD
 
 from ananews.nlp import BertWrapper
 
 
-class ItemPipeline():
+class ItemPipeline:
     def __init__(
         self,
         classifier: Union[LogisticRegression, Union[os.PathLike, str]],
