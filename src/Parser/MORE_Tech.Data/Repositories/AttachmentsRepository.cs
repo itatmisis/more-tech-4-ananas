@@ -15,6 +15,5 @@ namespace MORE_Tech.Data.Repositories
         {
             await _context.Attachments.AddAsync(attachments);
         }
-
     }
 }

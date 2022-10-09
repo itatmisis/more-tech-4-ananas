@@ -64,7 +64,7 @@ namespace MORE_Tech.Parser.ParserImplementations.VKParse
                             {
                                 attachments[0].Add(url);
                             }
-                            
+
                         }
                     }
                 }

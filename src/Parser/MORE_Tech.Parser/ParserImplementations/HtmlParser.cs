@@ -31,7 +31,7 @@ namespace MORE_Tech.Parser.ParserImplementations
             _instrutionProcessor = instructionProcessor ??
                 throw new ArgumentNullException(nameof(instructionProcessor));
 
-            _unitOfWork = unitOfWork ?? 
+            _unitOfWork = unitOfWork ??
                 throw new ArgumentNullException(nameof(unitOfWork));
 
             _visitedUrls = new List<string>();
@@ -109,7 +109,7 @@ namespace MORE_Tech.Parser.ParserImplementations
             }
 
             recutsionDepth++;
-           
+
 
             try
             {
@@ -141,7 +141,7 @@ namespace MORE_Tech.Parser.ParserImplementations
                         _logger.LogError($"Error while saving news: {ex}");
                     }
                 }
-                
+
 
                 List<string> feedUrls = getUrlsFeed(body);
 
@@ -165,7 +165,7 @@ namespace MORE_Tech.Parser.ParserImplementations
                 return;
             }
 
-           
+
         }
 
         private async Task<News> parseNews(string url)
@@ -188,7 +188,7 @@ namespace MORE_Tech.Parser.ParserImplementations
             {
                 throw new Exception($"Url: {url} already visited");
             }
-            
+
             if(recutsionDepth > 100)
             {
                 throw new Exception("Recursion level more than 10");
@@ -251,7 +251,6 @@ namespace MORE_Tech.Parser.ParserImplementations
             {
                 view = 0;
             }
-            
             var dateString = parseItem(doc, _parseInstructions.DateTime);
             if (!DateTime.TryParse(dateString, out DateTime date))
             {
@@ -270,7 +269,6 @@ namespace MORE_Tech.Parser.ParserImplementations
                        });
                 }
             }
-         
             return news;
         }
 

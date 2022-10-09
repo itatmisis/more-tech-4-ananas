@@ -24,7 +24,7 @@ namespace MORE_Tech.Parser
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false);
-            
+
             var appSettings = _configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettings);
 
@@ -55,7 +55,6 @@ namespace MORE_Tech.Parser
             .UseNpgsql(appSettings.Get<AppSettings>().DbConnection, x => x.MigrationsAssembly("MORE_Tech.Data"))
             .UseLowerCaseNamingConvention());
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-         
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

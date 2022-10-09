@@ -1,4 +1,5 @@
 {
 	"python.linting.flake8Path": "pflake8",
-	"prettier.useEditorConfig": true
+	"prettier.useEditorConfig": true,
+	"python.analysis.typeCheckingMode": "off"
 }

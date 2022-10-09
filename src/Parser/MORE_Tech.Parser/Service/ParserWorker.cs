@@ -36,7 +36,6 @@ namespace MORE_Tech.Parser.Service
                 
                 await Task.Delay(1000 * 60 * 60 * 24 - (int)sw.ElapsedMilliseconds);
             }
-           
         }
 
         private List<NewsSource> getSources()

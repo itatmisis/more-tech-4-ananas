@@ -17,7 +17,7 @@ namespace MORE_Tech.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-           
+
 
             builder.ApplyConfiguration(new AttachmentsConfiguration());
             builder.ApplyConfiguration(new NewsConfiguration());
