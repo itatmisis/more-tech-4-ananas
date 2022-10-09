@@ -102,5 +102,16 @@ docker build -t API -f Dockerfile .
 docker run -it -d -p 8000: 8000 API
 ```
 
+#### Telegram bot
+
+Бот позволяет пользователю выбрать его роль и получать новости в сооветсвии с его ролью. Пользователь может оставлять реакци на новости,
+которые в последствии будут учитывать при выдаче новостей
+
+```
+git clone https://github.com/itatmisis/more-tech-4-ananas-anabot.git
+docker build -t BOT -f Dockerfile .
+docker run -it -d  BOT
+```
+
 
 

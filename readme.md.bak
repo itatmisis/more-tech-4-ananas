@@ -6,7 +6,7 @@
 
 #### Запуск
 
-Запустить проект MORE_Tech.Parser. Либо в папке src запустить команду ***docker-compose build && docker-compose up -d*** - в этом случае вместе с парсером также будет запущен и API
+Запустить проект MORE_Tech.Parser. Либо в папке src запустить команду ***docker-compose build && docker-compose up -d***
 
 
 
