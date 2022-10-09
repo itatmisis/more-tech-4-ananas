@@ -36,23 +36,12 @@ namespace MORE_Tech.Data.Models
             Attachments = new List<Attachments>();
         }
 
-        private string getFirstSentence(string text)
-        {
-            int dotIndex = text.IndexOf('.');
-            if(dotIndex == -1)
-            {
-                if(text.Length < 100)
-                {
-                    return text;
-                }
-                else
-                {
-                    return string.Join(' ', text.Split(' ').Take(10));
-                }
-            }
-            return text.Substring(0, dotIndex + 1);
-        }
-
+        /// <summary>
+        /// Получение Guid-а, которые основан на
+        /// тексте статьи. Сделано для первичного отсеивания дубликатов.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         private Guid getId(string text)
         {
             using (MD5 md5 = MD5.Create())

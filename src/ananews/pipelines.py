@@ -4,7 +4,6 @@ from typing import Tuple, Union
 import joblib
 import numpy as np
 from sklearn.decomposition import TruncatedSVD
-from sklearn.linear_model import LogisticRegression
 
 from ananews.nlp import BertWrapper
 
@@ -17,10 +16,6 @@ class ItemPipeline:
         nlp_model: BertWrapper,
     ):
         super().__init__()
-        if isinstance(classifier, str) or isinstance(classifier, os.PathLike):
-            self.classifier = joblib.load(classifier)
-        else:
-            self.classifier = classifier
         if isinstance(trunc_svd, str) or isinstance(trunc_svd, os.PathLike):
             self.trunc_svd = joblib.load(trunc_svd)
         else:
@@ -38,9 +33,7 @@ class ItemPipeline:
         :return: векторное представление новости, (id новости, id источника, предсказанная роль)
         """
         news_emb = self.get_embedding(news_text)
-        news_features = np.array(list(news_emb) + [news_views, news_source_id])  # (256 + 2)
-        news_role = self.classifier.predict_proba(news_features).squeeze()
-        return news_emb, (news_id, news_source_id, news_role)
+        return news_emb, (news_id, news_source_id)
 
     def get_embedding(self, text: str) -> np.ndarray:
         sbert_emb = self.nlp_model.get_embedding(text)

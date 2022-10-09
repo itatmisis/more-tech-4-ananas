@@ -1,6 +1,4 @@
-﻿
-
-using MORE_Tech.Data.Models;
+﻿using MORE_Tech.Data.Models;
 
 namespace MORE_Tech.Data.Repositories
 {

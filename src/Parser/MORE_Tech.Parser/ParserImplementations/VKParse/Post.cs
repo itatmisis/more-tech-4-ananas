@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using MORE_Tech.Data.Models;
+﻿using MORE_Tech.Data.Models;
 namespace MORE_Tech.Parser.ParserImplementations.VKParse
 {
     public class Post

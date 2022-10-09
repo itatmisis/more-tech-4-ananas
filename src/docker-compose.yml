@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  more-tech.parser:
+    image: ${DOCKER_REGISTRY-}more-tect-parser
+    build:
+      context: .
+      dockerfile: Parser/Dockerfile
+      
+ 
+  
+ 

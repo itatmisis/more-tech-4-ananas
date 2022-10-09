@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<rules>
+<instructions>
   <FeedUrls>
 	  <item><![CDATA[\/]]></item>
 	  <item><![CDATA[\/legalnews]]></item>
@@ -11,11 +11,16 @@
   <RootUrl>
   <![CDATA[https://www.garant.ru]]>
   </RootUrl>
+	<NewsName>
+	<![CDATA[//div[@class = 'page-content']//h1]]>
+	</NewsName>
   <NewsText>
   <![CDATA[//div[@class='js-mediator-article']]]>
   </NewsText>
    <DateTime>
  <![CDATA[//div[@class = 'actions-info']//time]]>
   </DateTime>
-
-</rules>
+	<Images attribute="src">
+		<![CDATA[//table//img]]>
+	</Images>
+</instructions>
